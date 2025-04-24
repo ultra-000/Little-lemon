@@ -1,0 +1,56 @@
+.required-star {
+    @apply text-red-500;
+}
+
+.step {
+    @apply flex justify-center items-center border border-gray-300 rounded-full w-8 h-8 text-gray-400 transition-colors duration-300;
+}
+
+.active-step {
+    @apply bg-[var(--primary-color)] text-white;
+}
+
+.form-step {
+    @apply py-12 flex flex-col justify-center items-center gap-y-8;
+}
+
+.form-step h2 {
+    @apply text-2xl font-bold;
+}
+
+.fields-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+}
+
+.form-group {
+    @apply flex flex-col gap-y-2;
+}
+
+.form-group input {
+    @apply border border-gray-300 rounded-md px-4 py-2;
+}
+
+input.input-error {
+    @apply border-red-500 transition-colors duration-300;
+}
+
+.buttons {
+    @apply flex gap-x-4;
+}
+
+.prev-btn {
+    @apply flex-1 border border-[var(--primary-color)] text-[var(--primary-color)] py-2 px-12 rounded-2xl hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300;
+}
+
+.next-btn, .submit-btn {
+    @apply flex-1 border border-[var(--primary-color)] bg-[var(--primary-color)] text-white py-2 px-12 rounded-2xl;
+}
+
+@media (min-width: 640px) {
+    .fields-grid {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 1rem;
+    }
+}

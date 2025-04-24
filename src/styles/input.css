@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "./imports.css";
+
+:root {
+  --primary-color: #495e57;
+  --secondary-color: #f4ce14;
+}
+
+html {
+  font-family: "Ubuntu", sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
