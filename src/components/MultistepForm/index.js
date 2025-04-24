@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState } from 'react';
 import FormError from "../FormError/index";
+import Announcer from "../Announcer/index";
 
 function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -101,42 +102,66 @@ function MultiStepForm() {
       <h2>Personal Information</h2>
       <div className="fields-grid">
         <div className="form-group">
-          <label>First Name <span className="required-star">*</span></label>
+          <label htmlFor="firstName">First Name <span className="required-star">*</span></label>
           <input
+            id="firstName"
             type="text"
             name="firstName"
+            required="true"
+            aria-required="true"
             value={formData.firstName}
             onChange={handleChange}
             placeholder="John..."
             className={errors.firstName ? 'input-error' : ''}
           />
-          {errors.firstName && FormError(errors.firstName)}
+          {errors.firstName && (
+            <>
+              <FormError errorMessage={errors.firstName} />
+              <Announcer message={errors.firstName} />
+            </>
+          ) }
         </div>
         
         <div className="form-group">
-          <label>Last Name <span className="required-star">*</span></label>
+          <label htmlFor="lastName">Last Name <span className="required-star">*</span></label>
           <input
+            id="lastName"
             type="text"
             name="lastName"
+            required="true"
+            aria-required="true"
             value={formData.lastName}
             onChange={handleChange}
             placeholder="Doe..."
             className={errors.lastName ? 'input-error' : ''}
           />
-          {errors.lastName && FormError(errors.lastName)}
+          {errors.lastName && (
+            <>
+              <FormError errorMessage={errors.lastName} />
+              <Announcer message={errors.lastName} />
+            </>
+          )}
         </div>
         
         <div className="form-group">
-          <label>Email <span className="required-star">*</span></label>
+          <label htmlFor="email">Email <span className="required-star">*</span></label>
           <input
+            id="email"
             type="email"
             name="email"
+            required="true"
+            aria-required="true"
             value={formData.email}
             onChange={handleChange}
             placeholder="example@domain.com"
             className={errors.email ? 'input-error' : ''}
           />
-          {errors.email && FormError(errors.email)}
+          {errors.email && (
+            <>
+              <FormError errorMessage={errors.email} />
+              <Announcer message={errors.email} />
+            </>
+          )}
         </div>
       </div>
       <div className="buttons">
@@ -151,42 +176,66 @@ function MultiStepForm() {
         <h2>Contact Information</h2>
         <div className="fields-grid">
           <div className="form-group">
-            <label>Phone Number <span className="required-star">*</span></label>
+            <label htmlFor="phone">Phone Number <span className="required-star">*</span></label>
             <input
+              id="phone"
               type="tel"
               name="phone"
+              required="true"
+              aria-required="true"
               value={formData.phone}
               onChange={handleChange}
               placeholder="123-456-7890"
               className={errors.phone ? 'input-error' : ''}
             />
-            {errors.phone && FormError(errors.phone)}
+            {errors.phone && (
+              <>
+                <FormError errorMessage={errors.phone} />
+                <Announcer message={errors.phone} />
+              </>
+            )}
           </div>
           
           <div className="form-group">
-            <label>Address <span className="required-star">*</span></label>
+            <label htmlFor="address">Address <span className="required-star">*</span></label>
             <input
+              id="address"
               type="text"
               name="address"
+              required="true"
+              aria-required="true"
               value={formData.address}
               onChange={handleChange}
               placeholder="123 Main St"
               className={errors.address ? 'input-error' : ''}
             />
-            {errors.address && FormError(errors.address)}
+            {errors.address && (
+              <>
+                <FormError errorMessage={errors.address} />
+                <Announcer message={errors.address} />
+              </>
+            )}
           </div>
           
           <div className="form-group">
-            <label>City <span className="required-star">*</span></label>
+            <label htmlFor="city">City <span className="required-star">*</span></label>
             <input
+              id="city"
               type="text"
               name="city"
+              required="true"
+              aria-required="true"
               value={formData.city}
               onChange={handleChange}
               placeholder="New York"
               className={errors.address ? 'input-error' : ''}
             />
-            {errors.city && FormError(errors.city)}
+            {errors.city && (
+              <>
+                <FormError errorMessage={errors.city} />
+                <Announcer message={errors.city} />
+              </>
+            )}
           </div>
           
           <div className="form-group">
