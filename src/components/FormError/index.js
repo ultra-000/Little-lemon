@@ -1,4 +1,3 @@
-import "./index.css";
 import errorIcon from "../../assets/icons/error.svg";
 
 function FormError ({ errorMessage }) {

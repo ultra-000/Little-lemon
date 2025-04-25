@@ -2,13 +2,23 @@ import "./global.css";
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App/index';
+import MultistepForm from "./components/MultistepForm/index";
+import ConfirmationPage from "./components/ConfirmationPage/index";
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <BrowserRouter>
+    <React.StrictMode>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<MultistepForm />} />
+          <Route path="confirm" element={<ConfirmationPage />} />
+        </Route>
+      </Routes>
+    </React.StrictMode>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

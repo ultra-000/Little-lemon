@@ -1,9 +1,11 @@
 import "./index.css";
 import { useState } from 'react';
+import { useNavigate } from "react-router";
 import FormError from "../FormError/index";
 import Announcer from "../Announcer/index";
 
 function MultiStepForm() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -90,9 +92,8 @@ function MultiStepForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateStep(currentStep)) {
-      // Here you would typically send the data to a server
-      console.log('Form submitted:', formData);
-      alert('Form submitted successfully!');
+      // Simulate sneding data to a server or something.
+      navigate("confirm");
     }
   };
 
@@ -260,7 +261,7 @@ function MultiStepForm() {
   const renderStep3 = () => (
     <div className="form-step">
       <h2>Review Information</h2>
-      <div>
+      <div className="flex flex-col gap-y-4">
         <p><strong>Name:</strong> {formData.firstName} {formData.lastName}</p>
         <p><strong>Email:</strong> {formData.email}</p>
         <p><strong>Phone:</strong> {formData.phone}</p>
@@ -278,6 +279,7 @@ function MultiStepForm() {
 
   return (
     <div>
+      <h1 className="text-center text-3xl font-bold my-8">Reserve a Table</h1>
       <div className="flex justify-center items-center gap-8">
         <span className={`step ${currentStep >= 1 ? 'active-step' : ''}`}>1</span>
         <span className={`step ${currentStep >= 2 ? 'active-step' : ''}`}>2</span>
