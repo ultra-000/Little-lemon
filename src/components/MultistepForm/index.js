@@ -344,6 +344,7 @@ function MultiStepForm() {
 
   return (
     <div>
+      <p className="text-gray-400">*<em>Accessible on a screen reader</em></p>
       <h1 className="text-center text-3xl font-bold my-8">Reserve a Table</h1>
       <div className="flex justify-center items-center gap-8">
         <span className={`step ${currentStep >= 1 ? 'active-step' : ''}`}>1</span>
