@@ -1,12 +1,14 @@
 import "./index.css";
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router";
 import FormError from "../FormError/index";
 import Announcer from "../Announcer/index";
+import { fetchAPI, submitAPI  } from '../../api/api.ts';
 
 function MultiStepForm() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  const [availableDates, setAvailableDates] = useState([]);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -14,9 +16,15 @@ function MultiStepForm() {
     phone: '',
     address: '',
     city: '',
-    zipCode: ''
+    zipCode: '',
+    date: '',
+    timeslot: ''
   });
   const [errors, setErrors] = useState({});
+  useEffect(() => {
+    const dates = fetchAPI(new Date(formData.date)); // Feed it the selected date.
+    setAvailableDates(dates);
+  }, [formData.date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +64,16 @@ function MultiStepForm() {
         stepErrors.email = 'Email is invalid';
         isValid = false;
       }
+
+      if (!formData.date.trim()) {
+        stepErrors.date = 'Date is required';
+        isValid = false;
+      }
+
+      if (!formData.timeslot.trim()) {
+        stepErrors.timeslot = 'Timeslot is required';
+        isValid = false;
+      }
     }
     
     if (step === 2) {
@@ -92,84 +110,129 @@ function MultiStepForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateStep(currentStep)) {
-      // Simulate sneding data to a server or something.
-      navigate("confirm");
+      const success = submitAPI(formData); // Simulating sneding data to a server. By the way `submitAPI()` always returns `true`, so the else clause will never be reached.
+      if (success) navigate("confirm");
+      else alert("Sorry, the reservation wasn't successful, maybe try again?");
     }
   };
 
   // Step 1: Personal Information
-  const renderStep1 = () => (
-    <div className="form-step">
-      <h2>Personal Information</h2>
-      <div className="fields-grid">
-        <div className="form-group">
-          <label htmlFor="firstName">First Name <span className="required-star">*</span></label>
-          <input
-            id="firstName"
-            type="text"
-            name="firstName"
-            required="true"
-            aria-required="true"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="John..."
-            className={errors.firstName ? 'input-error' : ''}
-          />
-          {errors.firstName && (
-            <>
-              <FormError errorMessage={errors.firstName} />
-              <Announcer message={errors.firstName} />
-            </>
-          ) }
+  const renderStep1 = () => {
+    return (
+      <div className="form-step">
+        <h2>Personal Information</h2>
+        <div className="fields-grid">
+          <div className="form-group">
+            <label htmlFor="firstName">First Name <span className="required-star">*</span></label>
+            <input
+              id="firstName"
+              type="text"
+              name="firstName"
+              required={true}
+              aria-required={true}
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="John..."
+              className={errors.firstName ? 'input-error' : ''}
+            />
+            {errors.firstName && (
+              <>
+                <FormError errorMessage={errors.firstName} />
+                <Announcer message={errors.firstName} />
+              </>
+            ) }
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name <span className="required-star">*</span></label>
+            <input
+              id="lastName"
+              type="text"
+              name="lastName"
+              required={true}
+              aria-required={true}
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Doe..."
+              className={errors.lastName ? 'input-error' : ''}
+            />
+            {errors.lastName && (
+              <>
+                <FormError errorMessage={errors.lastName} />
+                <Announcer message={errors.lastName} />
+              </>
+            )}
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="email">Email <span className="required-star">*</span></label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required={true}
+              aria-required={true}
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@domain.com"
+              className={errors.email ? 'input-error' : ''}
+            />
+            {errors.email && (
+              <>
+                <FormError errorMessage={errors.email} />
+                <Announcer message={errors.email} />
+              </>
+            )}
+          </div>
+  
+          <div className="form-group">
+            <label htmlFor="date">Date <span className="required-star">*</span></label>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              required={true}
+              aria-required={true}
+              value={formData.date}
+              onChange={handleChange}
+              className={errors.date ? 'input-error' : ''}
+            />
+            {errors.date && (
+              <>
+                <FormError errorMessage={errors.date} />
+                <Announcer message={errors.date} />
+              </>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="date">Timeslot <span className="required-star">*</span></label>
+            <select
+              id="timeslot"
+              name="timeslot"
+              required={true}
+              aria-required={true}
+              value={formData.timeslot}
+              onChange={handleChange}
+              className={errors.timeslot ? 'input-error' : ''}
+            >
+              <option value="">Select a timeslot</option>
+              {availableDates.map((timeslot) => <option key={timeslot} value={timeslot}>{timeslot}</option>)}
+            </select>
+            {errors.timeslot && (
+              <>
+                <FormError errorMessage={errors.timeslot} />
+                <Announcer message={errors.timeslot} />
+              </>
+            )}
+          </div>
         </div>
-        
-        <div className="form-group">
-          <label htmlFor="lastName">Last Name <span className="required-star">*</span></label>
-          <input
-            id="lastName"
-            type="text"
-            name="lastName"
-            required="true"
-            aria-required="true"
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="Doe..."
-            className={errors.lastName ? 'input-error' : ''}
-          />
-          {errors.lastName && (
-            <>
-              <FormError errorMessage={errors.lastName} />
-              <Announcer message={errors.lastName} />
-            </>
-          )}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="email">Email <span className="required-star">*</span></label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            required="true"
-            aria-required="true"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="example@domain.com"
-            className={errors.email ? 'input-error' : ''}
-          />
-          {errors.email && (
-            <>
-              <FormError errorMessage={errors.email} />
-              <Announcer message={errors.email} />
-            </>
-          )}
+        <div className="buttons">
+          <button type="button" className="next-btn" onClick={nextStep}>Next</button>
         </div>
       </div>
-      <div className="buttons">
-        <button type="button" className="next-btn" onClick={nextStep}>Next</button>
-      </div>
-    </div>
-  );
+    )
+  };
 
   // Step 2: Contact Information
   const renderStep2 = () => (
@@ -182,8 +245,8 @@ function MultiStepForm() {
               id="phone"
               type="tel"
               name="phone"
-              required="true"
-              aria-required="true"
+              required={true}
+              aria-required={true}
               value={formData.phone}
               onChange={handleChange}
               placeholder="123-456-7890"
@@ -203,8 +266,8 @@ function MultiStepForm() {
               id="address"
               type="text"
               name="address"
-              required="true"
-              aria-required="true"
+              required={true}
+              aria-required={true}
               value={formData.address}
               onChange={handleChange}
               placeholder="123 Main St"
@@ -224,8 +287,8 @@ function MultiStepForm() {
               id="city"
               type="text"
               name="city"
-              required="true"
-              aria-required="true"
+              required={true}
+              aria-required={true}
               value={formData.city}
               onChange={handleChange}
               placeholder="New York"
@@ -264,6 +327,8 @@ function MultiStepForm() {
       <div className="flex flex-col gap-y-4">
         <p><strong>Name:</strong> {formData.firstName} {formData.lastName}</p>
         <p><strong>Email:</strong> {formData.email}</p>
+        <p><strong>Date:</strong> {formData.date}</p>
+        <p><strong>Timeslot:</strong> {formData.timeslot}</p>
         <p><strong>Phone:</strong> {formData.phone}</p>
         <p><strong>Address:</strong> {formData.address}</p>
         <p><strong>City:</strong> {formData.city}</p>

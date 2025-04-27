@@ -28,11 +28,11 @@
     @apply flex flex-col gap-y-2;
 }
 
-.form-group input {
+.form-group input, select {
     @apply border border-gray-300 rounded-md px-4 py-2;
 }
 
-input.input-error {
+input.input-error, select.input-error {
     @apply border-red-500 transition-colors duration-300;
 }
 
